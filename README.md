@@ -1,4 +1,4 @@
-# Revisio Action for Open WebUI functions
+# Revisio Action plugun for Open WebUI functions
 
 The LLM agent evaluates the previous response and only offers a new one if it is significantly superior; otherwise, it replies with "NO IMPROVEMENTS".
 
