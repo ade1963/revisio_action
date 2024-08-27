@@ -1,9 +1,9 @@
 """
 title: Revisio Action
 author: Dmitry Andreev
-author_url: https://github.com/ade1963
+author_url: https://github.com/ade1963/revisio_action
 funding_url: https://github.com/open-webui
-version: 0.0.1
+version: 0.0.2
 required_open_webui_version: 0.3.9
 """
 # The LLM agent evaluates the previous response and only offers a new one if it is significantly superior; otherwise, it replies with "NO IMPROVEMENTS."
@@ -23,7 +23,7 @@ class Action:
         )
         models: List[str] = Field(
             default=["llama3.1:8b-instruct-q8_0"],
-            description="List of models to use self-reflecting.",
+            description="List of comma-separated models for self-reflecting.",
         )
         critic_prompt: str = Field(
             default="Evaluate the previous response. If and only if you can provide an objectively superior answer that is significantly more accurate, comprehensive, or helpful, present only the improved response without any introductory statements. The threshold for improvement is extremely high - minor enhancements or rephrasing do not qualify. In the vast majority of cases, simply state 'NO IMPROVEMENTS'. Only in rare instances where the original response is clearly inadequate or incorrect should you offer an alternative answer.",
@@ -69,7 +69,7 @@ class Action:
                 
                 if self.valves.stop_word in response and len(response) <= (len(self.valves.stop_word)+4):
                     await __event_emitter__( {"type": "status", "data": {"description": f"Received stop word: {response}", "done": True}})
-                    return None
+                    return body
                 
                 body["messages"][1]["content"] = response
                 prev_response = response
